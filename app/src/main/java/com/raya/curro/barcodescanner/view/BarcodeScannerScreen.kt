@@ -214,10 +214,16 @@ fun CameraPreview(viewModel: BarCodeScannerViewModel) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text("Error: ${barScanState.error}")
+                    Text("⚠️ Registration Error", 
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.error)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(barScanState.error, 
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(horizontal = 16.dp))
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { viewModel.resetState() }) {
-                        Text("Try Again")
+                        Text("Scan Another QR Code")
                     }
                 }
             }

@@ -24,22 +24,31 @@ class BarCodeScannerViewModel : ViewModel() {
             _barScanState = BarScanState.Loading
 
             barcodes.forEach { barcode ->
-                barcode.rawValue?.let { identifier ->
-                    try {
-                        // Process identifier directly
-                        _barScanState = BarScanState.ScanSuccess(
-                            identifier = identifier.trim(),
-                            format = getBarcodeFormatName(barcode.format)
-                        )
-                    } catch (e: Exception) {
-                        Log.e("BarCodeScanner", "Error processing barcode", e)
-                        _barScanState = BarScanState.Error("Error processing barcode: ${e.message}")
+                try {
+                    if (barcode.rawValue.isNullOrBlank()) {
+                        _barScanState = BarScanState.Error("QR Code detected but contains no data")
+                        return@launch
                     }
-                    return@launch
+
+                    val identifier = barcode.rawValue!!.trim()
+                    if (identifier.isEmpty()) {
+                        _barScanState = BarScanState.Error("QR Code contains only whitespace")
+                        return@launch
+                    }
+
+                    // Process identifier successfully
+                    _barScanState = BarScanState.ScanSuccess(
+                        identifier = identifier,
+                        format = getBarcodeFormatName(barcode.format)
+                    )
+                } catch (e: Exception) {
+                    Log.e("BarCodeScanner", "Error processing barcode", e)
+                    _barScanState = BarScanState.Error("System error processing QR code: ${e.message}")
                 }
+                return@launch
             }
-            // If we get here, no valid barcode value was found
-            _barScanState = BarScanState.Ideal
+            // This should not happen since we check for empty barcodes above
+            _barScanState = BarScanState.Error("Unexpected error: No barcode data found")
         }
     }
 
