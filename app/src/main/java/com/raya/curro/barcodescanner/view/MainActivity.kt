@@ -1,4 +1,4 @@
-package com.codegalaxy.barcodescanner.view
+package com.raya.curro.barcodescanner.view
 
 import BarcodeScannerScreen
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.codegalaxy.barcodescanner.ui.theme.BarCodeScannerTheme
-import com.codegalaxy.barcodescanner.viewmodel.BarCodeScannerViewModel
+import com.raya.curro.barcodescanner.ui.theme.BarCodeScannerTheme
+import com.raya.curro.barcodescanner.viewmodel.BarCodeScannerViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -32,4 +32,5 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 

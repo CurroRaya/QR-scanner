@@ -30,9 +30,9 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.codegalaxy.barcodescanner.model.BarCodeAnalyzer
-import com.codegalaxy.barcodescanner.viewmodel.BarCodeScannerViewModel
-import com.codegalaxy.barcodescanner.BarScanState
+import com.raya.curro.barcodescanner.model.BarCodeAnalyzer
+import com.raya.curro.barcodescanner.viewmodel.BarCodeScannerViewModel
+import com.raya.curro.barcodescanner.BarScanState
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -78,7 +78,7 @@ fun BarcodeScannerScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Camera permission is required for scanning barcodes")
+            Text("Camera permission is required for scanning QR codes")
             Button(onClick = { launcher.launch(android.Manifest.permission.CAMERA) }) {
                 Text("Grant Permission")
             }
@@ -174,7 +174,7 @@ fun CameraPreview(viewModel: BarCodeScannerViewModel) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text("Position the barcode in front of the camera.")
+                    Text("Position the QR code in front of the camera to register participant.")
                 }
             }
             is BarScanState.Loading -> {
@@ -189,41 +189,22 @@ fun CameraPreview(viewModel: BarCodeScannerViewModel) {
                 }
             }
             is BarScanState.ScanSuccess -> {
-                if (barScanState.barStateModel != null) {
-                    // JSON QR Code result
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text("Invoice Id: ${barScanState.barStateModel.invoiceNumber}")
-                        Text("Name: ${barScanState.barStateModel.client.name}")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Purchases:", style = MaterialTheme.typography.titleMedium)
-                        barScanState.barStateModel.purchase.forEach { item ->
-                            Text("${item.item}: ${item.quantity} x $${item.price}")
-                        }
-                        Text("Total Amount: $${barScanState.barStateModel.totalAmount}")
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { viewModel.resetState() }) {
-                            Text("Scan Another")
-                        }
-                    }
-                } else {
-                    // Regular barcode result
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text("Format: ${barScanState.format}",
-                            style = MaterialTheme.typography.titleMedium)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Value: ${barScanState.rawValue}")
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { viewModel.resetState() }) {
-                            Text("Scan Another")
-                        }
+                // Hackathon participant identifier result
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text("Format: ${barScanState.format}",
+                        style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("Participant ID:", style = MaterialTheme.typography.titleLarge)
+                    Text(barScanState.identifier, 
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.padding(horizontal = 16.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Button(onClick = { viewModel.resetState() }) {
+                        Text("Scan Another")
                     }
                 }
             }
@@ -240,37 +221,6 @@ fun CameraPreview(viewModel: BarCodeScannerViewModel) {
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun ScanResultContent(scanSuccess: BarScanState.ScanSuccess, onRescan: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        if (scanSuccess.barStateModel != null) {
-            // Display JSON content
-            Text("Invoice Id: ${scanSuccess.barStateModel.invoiceNumber}")
-            Text("Name: ${scanSuccess.barStateModel.client.name}")
-            Spacer(modifier = Modifier.height(8.dp))
-            Text("Purchases:", style = MaterialTheme.typography.titleMedium)
-            scanSuccess.barStateModel.purchase.forEach { item ->
-                Text("${item.item}: ${item.quantity} x $${item.price}")
-            }
-            Text("Total Amount: $${scanSuccess.barStateModel.totalAmount}")
-        } else {
-            // Display raw barcode content
-            Text("Format: ${scanSuccess.format}", style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text("Value: ${scanSuccess.rawValue}")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onRescan) {
-            Text("Scan Another")
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.codegalaxy.barcodescanner
+package com.raya.curro.barcodescanner
 
 import org.junit.Test
 
@@ -15,3 +15,5 @@ class ExampleUnitTest {
         assertEquals(4, 2 + 2)
     }
 }
+
+

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.codegalaxy.barcodescanner"
+    namespace = "com.raya.curro.barcodescanner"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.codegalaxy.barcodescanner"
+        applicationId = "com.raya.curro.barcodescanner"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

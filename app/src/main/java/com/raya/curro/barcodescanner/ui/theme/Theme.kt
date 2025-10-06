@@ -1,4 +1,4 @@
-package com.codegalaxy.barcodescanner.ui.theme
+package com.raya.curro.barcodescanner.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -56,3 +56,5 @@ fun BarCodeScannerTheme(
         content = content
     )
 }
+
+

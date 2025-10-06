@@ -1,4 +1,4 @@
-package com.codegalaxy.barcodescanner
+package com.raya.curro.barcodescanner
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,8 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.codegalaxy.barcodescanner", appContext.packageName)
+        assertEquals("com.raya.curro.barcodescanner", appContext.packageName)
     }
 }
+
+
